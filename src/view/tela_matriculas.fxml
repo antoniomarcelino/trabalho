@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="375.0" prefWidth="600.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MatriculaController">
+   <children>
+      <ComboBox fx:id="cbAlunos" layoutX="32.0" layoutY="27.0" prefHeight="25.0" prefWidth="543.0" promptText="Alunos" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0" />
+      <ComboBox fx:id="cbTurmas" layoutX="29.0" layoutY="74.0" prefHeight="25.0" prefWidth="543.0" promptText="Turma" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="70.0" />
+      <Button fx:id="btnAdicionar" layoutX="30.0" layoutY="115.0" mnemonicParsing="false" onAction="#adicionar" style="-fx-background-color: #a2bfee; -fx-background-radius: 30;" text="Adicionar" AnchorPane.leftAnchor="30.0">
+         <graphic>
+            <ImageView fitHeight="21.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/novo.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <TableView fx:id="table" layoutX="30.0" layoutY="156.0" prefHeight="151.0" prefWidth="543.0" style="-fx-background-radius: 2;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="160.0">
+        <columns>
+            <TableColumn fx:id="colCodigo" prefWidth="84.0" style="-fx-background-color: #a2bfee;" text="Código" />
+          <TableColumn fx:id="colDisciplinas" prefWidth="230.0" style="-fx-background-color: #a2bfee;" text="Disciplinas" />
+            <TableColumn fx:id="colProfessor" prefWidth="225.0" style="-fx-background-color: #a2bfee;" text="Professor" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnMatricular" layoutX="29.0" layoutY="330.0" mnemonicParsing="false" onAction="#matricular" style="-fx-background-color: #a2bfee; -fx-background-radius: 30;" text="Matricular" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0">
+         <graphic>
+            <ImageView fitHeight="21.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/salvar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="btnDeletar" layoutX="138.0" layoutY="117.0" mnemonicParsing="false" onAction="#deletar" style="-fx-background-color: #a2bfee; -fx-background-radius: 20;" text="Deletar">
+         <graphic>
+            <ImageView fitHeight="21.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/fechar.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>
