@@ -53,5 +53,10 @@ public boolean deletar(Matricula m) {
 		}	    
 		return true;
 	}
+	
+	
+	public Matricula consultar(int aluno, int turma) {
+		return new Matricula();
+	}
 
 }

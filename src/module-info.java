@@ -7,6 +7,8 @@ module Trabalho {
 	requires java.sql;
 	requires java.base;
 	requires com.jfoenix ;
+	requires org.junit.jupiter.api;
+	requires junit;
 	
 	opens controller;
 	opens application;

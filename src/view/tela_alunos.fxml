@@ -84,17 +84,26 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
+                  <Button fx:id="btnGerarRelatorio" layoutX="390.0" layoutY="17.0" mnemonicParsing="false" onAction="#gerarRelatorio" style="-fx-background-color: #a2bfee; -fx-background-radius: 20;" text="GerarRelatorio" textFill="WHITE">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Pictures/reg/agenda.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
             </HBox>
             <TextField fx:id="barraPesquisa" layoutX="10.0" layoutY="53.0" onKeyReleased="#pesquisar" promptText="Pesquise pelo nome..." style="-fx-background-radius: 10;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="53.0" />
             <TableView fx:id="table" layoutX="9.0" layoutY="95.0" prefHeight="239.0" prefWidth="582.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="9.0" AnchorPane.topAnchor="95.0">
                <columns>
-                  <TableColumn fx:id="col_id" prefWidth="75.0" style="-fx-background-color: #a2bfee;" text="ID" />
-                  <TableColumn fx:id="colNome" prefWidth="132.0" style="-fx-background-color: #a2bfee;" text="Nome" />
-                  <TableColumn fx:id="colEmail" prefWidth="114.0" style="-fx-background-color: #a2bfee;" text="Email" />
-                  <TableColumn fx:id="colTelefone" prefWidth="74.0" style="-fx-background-color: #a2bfee;" text="Telefone" />
+                  <TableColumn fx:id="col_id" prefWidth="61.0" style="-fx-background-color: #a2bfee;" text="ID" />
+                  <TableColumn fx:id="colNome" prefWidth="121.0" style="-fx-background-color: #a2bfee;" text="Nome" />
+                  <TableColumn fx:id="colEmail" prefWidth="102.0" style="-fx-background-color: #a2bfee;" text="Email" />
+                  <TableColumn fx:id="colDataMatricula" prefWidth="111.0" style="-fx-background-color: #a2bfee;" text="Data de Matricula" />
                   <TableColumn fx:id="colDataNascimento" prefWidth="122.0" style="-fx-background-color: #a2bfee;" text="Data de Nascimento" />
-                  <TableColumn fx:id="colMatricula" prefWidth="73.0" style="-fx-background-color: #a2bfee;" text="Matricula" />
+                  <TableColumn fx:id="colRegistro" prefWidth="73.0" style="-fx-background-color: #a2bfee;" text="Registro" />
                   <TableColumn fx:id="colAnoIngresso" prefWidth="64.0" style="-fx-background-color: #a2bfee;" text="Ingresso" />
                </columns></TableView>
          </children>
