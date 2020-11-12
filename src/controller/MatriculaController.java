@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXTextField;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -27,6 +29,7 @@ import model.Matricula;
 import model.MatriculaDAO;
 import model.Turma;
 import model.TurmaDAO;
+import util.ValidarCampo;
 
 public class MatriculaController implements Initializable {
 
@@ -65,6 +68,86 @@ public class MatriculaController implements Initializable {
     private List<Aluno> alunos;
     private List<Turma> turmasMatriculadas = new ArrayList<Turma>();
     private List<Turma> turmasParaMatricular = new ArrayList<Turma>();
+    
+    @FXML
+    private JFXTextField notasTxt;
+
+    @FXML
+    private JFXTextField frequenciaTxt;
+
+    @FXML
+    private Button btnNotas;
+
+    @FXML
+    private Button btnFrequencia;
+    
+    int totalAulas = 0;
+
+   
+    @FXML
+    void lancarFrequencia(ActionEvent event) {
+    	String freqStr = frequenciaTxt.getText();
+    	if(ValidarCampo.checarNumerico(freqStr)) {
+    		int frequencia = Integer.parseInt(freqStr);    		
+    		if(frequencia>0 && frequencia<=totalAulas) {
+    			MatriculaDAO dao = new MatriculaDAO();
+    	    	Matricula matricula = new Matricula();
+    	    	int turma = table.getSelectionModel().getSelectedItem().getId();
+    	    	int aluno = alunos.get(cbAlunos.getSelectionModel().getSelectedIndex()).getId();
+    	    	matricula.setTurma(turma);
+    	    	matricula.setAluno(aluno);
+    	    	matricula.setFaltas(frequencia);
+    	    	dao.inserir(matricula);    		
+    	    }
+    	}else {
+    		frequenciaTxt.setText("");
+    	}
+    }
+
+    @FXML
+    void lancarNotas(ActionEvent event) {
+    	String notaStr = notasTxt.getText();
+    	if(ValidarCampo.checarNumerico(notaStr)) {
+    		double nota = Integer.parseInt(notaStr);    		
+    		if(nota>0 && nota<=10) {
+    			MatriculaDAO dao = new MatriculaDAO();
+    	    	Matricula matricula = new Matricula();
+    	    	int turma = table.getSelectionModel().getSelectedItem().getId();
+    	    	int aluno = alunos.get(cbAlunos.getSelectionModel().getSelectedIndex()).getId();
+    	    	matricula.setTurma(turma);
+    	    	matricula.setAluno(aluno);
+    	    	matricula.setNotas(nota);
+    	    	dao.inserir(matricula);    		
+    	    }
+    	}else {
+    		notasTxt.setText("");
+    	}
+    }
+    
+    void atribuirStatus() {
+    	List<Double>notas;
+    	MatriculaDAO dao = new MatriculaDAO();
+    	int turma = table.getSelectionModel().getSelectedItem().getId();
+    	int aluno = alunos.get(cbAlunos.getSelectionModel().getSelectedIndex()).getId();
+    	Matricula matricula = dao.consultar(turma, aluno);
+    	notas = matricula.getNotas();
+    	double n1 = notas.get(0);
+    	double n2 = notas.get(1);
+    	double notaFinal = ( n1 * 0.4 ) + ( n2 * 0.6 );
+    	if(notaFinal < 0 || notaFinal > 10.0) {
+    		Alert alert;
+        	String info = "Erro ao calcular nota!";
+        	alert = new Alert(AlertType.INFORMATION, info, ButtonType.OK);
+    		alert.setTitle("STATUS");
+    		alert.setHeaderText("Erro");
+        	alert.show();
+    	}
+    	else if( notaFinal < 6.0) {
+    		matricula.setStatus(0);
+    	}else {
+    		matricula.setStatus(1);
+    	}		
+    }
     
     @FXML
     void deletar(ActionEvent event) {

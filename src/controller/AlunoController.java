@@ -1,10 +1,12 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -13,14 +15,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.Aluno;
 import model.AlunoDAO;
 import util.ValidarCampo;
@@ -62,6 +72,9 @@ public class AlunoController implements Initializable{
 	    private Button btnAtualizar;
 	    
 	    @FXML
+	    private Button btnGerarRelatorio;
+	    
+	    @FXML
 	    private Label lblValidaNome;
 
 	    @FXML
@@ -76,6 +89,8 @@ public class AlunoController implements Initializable{
 	    @FXML
 	    private Label lblValidaDataMatricula;
 	    
+	  
+	    
 	    @FXML
 	    private TableView<Aluno> table;
 	    
@@ -89,19 +104,34 @@ public class AlunoController implements Initializable{
 	    private TableColumn<Aluno, String> colEmail;
 
 	    @FXML
-	    private TableColumn<Aluno, String> colTelefone;
+	    private TableColumn<Aluno, String> colDataMatricula;
 
 	    @FXML
 	    private TableColumn<Aluno, LocalDate> colDataNascimento;
 
 	    @FXML
-	    private TableColumn<Aluno, String> colMatricula;
+	    private TableColumn<Aluno, Integer> colRegistro;
 
 	    @FXML
-	    private TableColumn<Aluno, Integer> colAnoIngresso;
-	    
+	    private Button alunosPorFrequenciaBtn;
+	   	    
 	    private ObservableList<Aluno> obsList = FXCollections.observableArrayList();
 	    private List<Aluno> alunos;
+	    
+	    @FXML
+	    void getAlunosPorFrequencia(ActionEvent event) {
+	    	AlunoDAO dao = new AlunoDAO();
+	    	List<String> alunos = dao.getAlunosPorFrequencia();
+	    	String lista = "Alunos por Frequencia: \n";
+	    	for(int x = 0; x <alunos.size(); x+=2) {
+	    		lista+= "\t" + alunos.get(x) + "\n" + "\t" + alunos.get(x+1) + "%\n";
+	    	}
+	    	Alert alert;
+        	alert = new Alert(AlertType.INFORMATION, lista, ButtonType.OK);
+    		alert.setTitle("Lista de Alunos");
+    		alert.setHeaderText("A lista mostra aluno por frequencia");
+        	alert.show();
+	    }
 
 	    @FXML
 	    void deletar(ActionEvent event) {
@@ -131,16 +161,17 @@ public class AlunoController implements Initializable{
 	    	
 	    	
 	    	if( (labelRegistroAluno.equals("") && labelNome.equals("") && labelDataNascimento.equals("") && labelEmail.equals("") && labelDataMatricula.equals("")) 
-	    			&& (!ValidarCampo.checarCampoVazio(txtNome) && !ValidarCampo.checarCampoVazio(txtRegistroAluno) && !ValidarCampo.checarCampoVazio(txtDataMatricula)
-	    					&& !ValidarCampo.checarCampoVazio(txtDataNascimento)) && !ValidarCampo.checarCampoVazio(txtEmail) ) {
+	    			&& (!ValidarCampo.checarCampoVazio(txtNome.getText()) && !ValidarCampo.checarCampoVazio(txtRegistroAluno.getText()) && !ValidarCampo.checarCampoVazio(txtDataMatricula.getText())
+	    					&& !ValidarCampo.checarCampoVazio(txtDataNascimento.getText())) && !ValidarCampo.checarCampoVazio(txtEmail.getText()) ) {
 	    	AlunoDAO dao = new AlunoDAO();
 	    	Aluno a = new Aluno();
 
 	    	a.setId(Integer.parseInt(txtID.getText()));
 	    	a.setNome(txtNome.getText());
 	    	a.setEmail(txtEmail.getText());
-	    	a.setRegistroAluno(txtRegistroAluno.getText());
+	    	a.setRegistroAluno(Integer.parseInt(txtRegistroAluno.getText()));
 	    	a.setDataNascimento(txtDataNascimento.getText());
+	    	a.setDataMatricula(txtDataMatricula.getText());
 
 	    	dao.atualizar(a);
 	    	atualizarTabela();
@@ -152,10 +183,9 @@ public class AlunoController implements Initializable{
 	    	col_id.setCellValueFactory(new PropertyValueFactory<Aluno, Integer>("id"));
 	    	colNome.setCellValueFactory(new PropertyValueFactory<Aluno, String>("nome"));
 	    	colEmail.setCellValueFactory(new PropertyValueFactory<Aluno, String>("email"));
-	    	colTelefone.setCellValueFactory(new PropertyValueFactory<Aluno, String>("telefone"));
+	    	colDataMatricula.setCellValueFactory(new PropertyValueFactory<Aluno, String>("dataMatricula"));
 	    	colDataNascimento.setCellValueFactory(new PropertyValueFactory<Aluno, LocalDate>("dataNascimento"));
-	    	colMatricula.setCellValueFactory(new PropertyValueFactory<Aluno, String>("matricula"));
-	    	colAnoIngresso.setCellValueFactory(new PropertyValueFactory<Aluno, Integer>("anoIngresso"));
+	    	colRegistro.setCellValueFactory(new PropertyValueFactory<Aluno, Integer>("registroAluno"));
 	    }
 	    
 	    public void atualizarTabela(){
@@ -183,8 +213,9 @@ public class AlunoController implements Initializable{
     	txtID.setText("");
     	txtNome.setText("");
     	txtEmail.setText("");
-    	txtTelefone.setText("");
+    	txtRegistroAluno.setText("");
     	txtDataNascimento.setText("");
+    	txtDataMatricula.setText("");
     }
     
     public void limparLabels()
@@ -193,36 +224,52 @@ public class AlunoController implements Initializable{
     	lblValidaEmail.setText("");
     	lblValidaRegistroAluno.setText("");
     	lblValidaDataNascimento.setText("");
+    	lblValidaDataMatricula.setText("");
     }
 
     @FXML
     void guardar(ActionEvent event) throws ParseException, SQLException {
-    	String labelTelefone= lblValidaRegistroAluno.getText();
+    	
     	String labelNome = lblValidaNome.getText();
     	String labelEmail = lblValidaEmail.getText();
     	String labelDataNascimento = lblValidaDataNascimento.getText();
+    	String labelDataMatricula = lblValidaDataMatricula.getText();
+    	String labelRegistroAluno = lblValidaRegistroAluno.getText();
     	
     	
-    	if( (labelTelefone.equals("") && labelNome.equals("") && labelDataNascimento.equals("") && labelEmail.equals("")) 
-    			&& (!ValidarCampo.checarCampoVazio(txtNome) && !ValidarCampo.checarCampoVazio(txtTelefone) 
-    					&& !ValidarCampo.checarCampoVazio(txtDataNascimento)) && !ValidarCampo.checarCampoVazio(txtEmail) ) {
+    	if(  (labelNome.equals("") && labelDataNascimento.equals("") && labelEmail.equals("")) 
+    		&& (!ValidarCampo.checarCampoVazio(txtNome.getText()) && !ValidarCampo.checarCampoVazio(txtDataNascimento.getText())
+    			&& !ValidarCampo.checarCampoVazio(txtEmail.getText()) )){
     	AlunoDAO dao = new AlunoDAO();
     	Aluno a = new Aluno();
     	
-    	
     	a.setNome(txtNome.getText());
     	a.setEmail(txtEmail.getText());
-    	a.setTelefone(txtTelefone.getText());
     	a.setDataNascimento(txtDataNascimento.getText());
-    	a.setAnoIngresso();
-    	a.setMatricula();
+    	a.setDataMatricula(txtDataMatricula.getText());
+    	a.setRegistroAluno(Integer.parseInt(txtRegistroAluno.getText()));
     	dao.inserir(a);
     	atualizarTabela();
     	limparCampos();
     	}
     }
     
-    //Preenche os campos do formulario com os dados da tabela
+    @FXML
+    void gerarRelatorio(ActionEvent event) throws IOException {
+  		 abrirForm("tela_relatorios");
+
+    }
+    
+    public void abrirForm(String formulario) throws IOException
+	    {
+		    Parent root = FXMLLoader.load(getClass().getResource("/view/"+formulario+".fxml"));
+		    Stage stage = new Stage();
+		    stage.setScene(new Scene(root));
+		    stage.setTitle(formulario);
+		    stage.initModality(Modality.APPLICATION_MODAL);
+		    stage.show();
+	    }
+    
     public void atualizarCampos() {
     	Aluno a = table.getSelectionModel().getSelectedItem();
     	String data = LocalDate.parse( 
@@ -234,7 +281,7 @@ public class AlunoController implements Initializable{
     	txtID.setText(Integer.toString(a.getId()));
     	txtNome.setText(a.getNome());
     	txtEmail.setText(a.getEmail());
-    	txtTelefone.setText(a.getTelefone());
+    	//txtTelefone.setText(a.getTelefone());
     	txtDataNascimento.setText(data);
     	
     	btnAtualizar.setDisable(false);
@@ -262,16 +309,16 @@ public class AlunoController implements Initializable{
 			{
 				String information = "";
 				
-				if(ValidarCampo.checarCampoVazio(txtNome)) {
+				if(ValidarCampo.checarCampoVazio(txtNome.getText())) {
 					information += "Campo Nome Obrigatório\n";
 		    	}
 		    	
-		    	if(!ValidarCampo.checarAlfa(txtNome)) {
+		    	if(!ValidarCampo.checarAlfa(txtNome.getText())) {
 					information += "Campo Nome Deve Conter Apenas Letras\n";
 
 		    	}
 
-		    	if(!ValidarCampo.checarTamanho(txtNome, 80))
+		    	if(!ValidarCampo.checarTamanho(txtNome.getText(), 80))
 		    	{
 		    		information += "Campo Nome Deve Conter no Máximo 50 Caracteres\n";
 
@@ -281,31 +328,7 @@ public class AlunoController implements Initializable{
 			}
 		});
 		
-		txtTelefone.focusedProperty().addListener( (observable, oldValue, newValue) -> 
-		{
-			
-			if(!newValue) 
-			{
-				String information = "";
-				
-				if(ValidarCampo.checarCampoVazio(txtTelefone)) {
-					information += "Campo Telefone Obrigatório\n";
-		    	}
-		    	
-
-		    	if(!ValidarCampo.checarNumerico(txtTelefone)) {
-					information += "Campo Telefone Deve Ser Numérico \n";
-		    	}
-		    	
-		    	if(!ValidarCampo.checarTamanhoTelefone(txtTelefone))
-		    	{
-		    		information += "Campo Telefone Deve Conter no Máximo 11 Dígitos\n";
-
-		    	}
-				lblValidaTelefone.setText(information);
-				
-			}
-		});
+		
 		
 		txtEmail.focusedProperty().addListener( (observable, oldValue, newValue) -> 
 		{
@@ -314,12 +337,12 @@ public class AlunoController implements Initializable{
 			{
 				String information = "";
 				
-				if(ValidarCampo.checarCampoVazio(txtEmail)) {
+				if(ValidarCampo.checarCampoVazio(txtEmail.getText())) {
 					information += "Campo Email Obrigatório\n";
 		    	}
 		    	
 		    	
-		    	if(!ValidarCampo.checarTamanho(txtEmail, 50))
+		    	if(!ValidarCampo.checarTamanho(txtEmail.getText(), 50))
 		    	{
 		    		information += "Campo Email Deve Conter no Máximo 11 Caracteres\n";
 		    	}
@@ -335,11 +358,11 @@ public class AlunoController implements Initializable{
 			{
 				String information = "";
 				
-				if(ValidarCampo.checarCampoVazio(txtDataNascimento)) {
+				if(ValidarCampo.checarCampoVazio(txtDataNascimento.getText())) {
 					information += "Campo Data de Nascimento Obrigatório\n";
 		    	}
 		    	
-		    	if(!ValidarCampo.checarFormatoData(txtDataNascimento)) {
+		    	if(!ValidarCampo.checarFormatoData(txtDataNascimento.getText())) {
 					information += "Campo Data de Nascimento Deve Ser do Formato DD/MM/YYYY \n";
 		    	}
 				lblValidaDataNascimento.setText(information);
