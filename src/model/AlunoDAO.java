@@ -31,6 +31,7 @@ public class AlunoDAO {
 		return true;
 	}
 	
+<<<<<<< HEAD
 	public List<String> getAlunosPorFrequencia(){
 		ArrayList<String> alunos = new ArrayList<>();
 		PreparedStatement stmt;
@@ -66,6 +67,8 @@ public class AlunoDAO {
 		
 	}
 	
+=======
+>>>>>>> 6cfaf62a6c7be9a38349f363525cf026e733643f
 	public List<Aluno> gerarRelatorio(String str) {
 		ArrayList<Aluno> alunos = new ArrayList<>();
 		PreparedStatement stmt;

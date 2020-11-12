@@ -112,8 +112,11 @@ public class AlunoController implements Initializable{
 	    @FXML
 	    private TableColumn<Aluno, Integer> colRegistro;
 
+<<<<<<< HEAD
 	    @FXML
 	    private Button alunosPorFrequenciaBtn;
+=======
+>>>>>>> 6cfaf62a6c7be9a38349f363525cf026e733643f
 	   	    
 	    private ObservableList<Aluno> obsList = FXCollections.observableArrayList();
 	    private List<Aluno> alunos;
