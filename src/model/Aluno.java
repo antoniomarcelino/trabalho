@@ -10,12 +10,25 @@ public class Aluno {
 	private int id;
 	private String nome;
 	private String email;
-	private String telefone;
-	private String matricula;
+	private String dataMatricula;
 	private LocalDate dataNascimento;
-	private int anoIngresso;
+	private int registroAluno;
 	private ArrayList<Turma> turmas;
 	
+	
+	
+	public String getDataMatricula() {
+		return dataMatricula;
+	}
+	public void setDataMatricula(String dataMatricula) {
+		this.dataMatricula = dataMatricula;
+	}
+	public int getRegistroAluno() {
+		return registroAluno;
+	}
+	public void setRegistroAluno(int registroAluno) {
+		this.registroAluno = registroAluno;
+	}
 	public int getId() {
 		return id;
 	}
@@ -34,21 +47,7 @@ public class Aluno {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getTelefone() {
-		return telefone;
-	}
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-	public String getMatricula() {
-		return matricula;
-	}
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
-	}
-	public void setMatricula() {
-		this.matricula = Integer.toString(anoIngresso) + "123";
-	}
+	
 	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
@@ -62,16 +61,7 @@ public class Aluno {
 	public void setDataNascimento(LocalDate data) {
 		this.dataNascimento = data;
 	}
-	public int getAnoIngresso() {
-		return anoIngresso;
-	}
-	public void setAnoIngresso() {
-		int ano = Year.now().getValue();
-		this.anoIngresso = ano;
-	}
-	public void setAnoIngresso(int anoIngresso) {
-		this.anoIngresso = anoIngresso;
-	}
+	
 	public ArrayList<Turma> getTurmas() {
 		return turmas;
 	}

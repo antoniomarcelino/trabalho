@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="732.0" prefWidth="600.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AlunoController">
+<AnchorPane prefHeight="770.0" prefWidth="600.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AlunoController">
    <children>
-      <HBox alignment="CENTER" layoutX="100.0" layoutY="28.0" prefHeight="49.0" prefWidth="600.0" style="-fx-background-color: #fff;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox alignment="CENTER" layoutX="100.0" layoutY="49.0" prefHeight="0.0" prefWidth="600.0" style="-fx-background-color: #fff;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label text="Cadastro de Aluno">
                <font>
@@ -27,16 +27,18 @@
       <AnchorPane layoutX="66.0" layoutY="52.0" prefHeight="368.0" prefWidth="600.0" style="-fx-background-color: #a2bfee;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="49.0">
          <children>
             <JFXTextField fx:id="txtNome" focusColor="WHITE" labelFloat="true" layoutX="26.0" layoutY="71.0" prefHeight="25.0" prefWidth="508.0" promptText="Nome " style="-fx-background-color: #a2bfee;" unFocusColor="WHITE" AnchorPane.leftAnchor="26.0" />
-            <JFXTextField fx:id="txtEmail" focusColor="WHITE" labelFloat="true" layoutX="26.0" layoutY="147.0" prefHeight="25.0" prefWidth="289.0" promptText="Email" style="-fx-background-color: #a2bfee;" unFocusColor="WHITE" AnchorPane.leftAnchor="26.0" />
-            <JFXTextField fx:id="txtRegistroAluno" focusColor="WHITE" labelFloat="true" layoutX="26.0" layoutY="217.0" promptText="Registro de Aluno" style="-fx-background-color: #a2bfee;" unFocusColor="WHITE" AnchorPane.leftAnchor="26.0" />
-            <JFXTextField fx:id="txtDataNascimento" focusColor="WHITE" labelFloat="true" layoutX="26.0" layoutY="287.0" promptText="Data de Nascimento" style="-fx-background-color: #a2bfee;" unFocusColor="WHITE" AnchorPane.leftAnchor="26.0" />
+            <JFXTextField fx:id="txtEmail" focusColor="WHITE" labelFloat="true" layoutX="26.0" layoutY="117.0" prefHeight="25.0" prefWidth="289.0" promptText="Email" style="-fx-background-color: #a2bfee;" unFocusColor="WHITE" AnchorPane.leftAnchor="26.0" />
+            <JFXTextField fx:id="txtRegistroAluno" focusColor="WHITE" labelFloat="true" layoutX="26.0" layoutY="159.0" promptText="Registro de Aluno" style="-fx-background-color: #a2bfee;" unFocusColor="WHITE" AnchorPane.leftAnchor="26.0" />
+            <JFXTextField fx:id="txtDataNascimento" focusColor="WHITE" labelFloat="true" layoutX="26.0" layoutY="208.0" promptText="Data de Nascimento" style="-fx-background-color: #a2bfee;" unFocusColor="WHITE" AnchorPane.leftAnchor="26.0" />
             <JFXTextField fx:id="txtID" editable="false" focusColor="WHITE" labelFloat="true" layoutX="26.0" layoutY="22.0" promptText="ID" unFocusColor="WHITE" />
             <Label fx:id="lblValidaNome" layoutX="26.0" layoutY="108.0" prefHeight="17.0" prefWidth="508.0" textFill="#eb4f4f" />
             <Label fx:id="lblValidaEmail" layoutX="26.0" layoutY="184.0" prefHeight="17.0" prefWidth="508.0" textFill="#eb4f4f" />
             <Label fx:id="lblValidaRegistroAluno" layoutX="26.0" layoutY="252.0" prefHeight="17.0" prefWidth="508.0" textFill="#eb4f4f" />
             <Label fx:id="lblValidaDataNascimento" layoutX="26.0" layoutY="321.0" prefHeight="17.0" prefWidth="229.0" textFill="#eb4f4f" />
-            <JFXTextField fx:id="txtDataMatricula" focusColor="WHITE" labelFloat="true" layoutX="310.0" layoutY="285.0" promptText="Data de Matricula" style="-fx-background-color: #a2bfee;" unFocusColor="WHITE" />
+            <JFXTextField fx:id="txtDataMatricula" focusColor="WHITE" labelFloat="true" layoutX="300.0" layoutY="172.0" promptText="Data de Matricula" style="-fx-background-color: #a2bfee;" unFocusColor="WHITE" />
             <Label fx:id="lblValidaDataMatricula" layoutX="310.0" layoutY="321.0" prefHeight="17.0" prefWidth="229.0" textFill="#eb4f4f" />
+            <Button fx:id="alunosPorFrequenciaBtn" layoutX="74.0" layoutY="317.0" mnemonicParsing="false" onAction="#getAlunosPorFrequencia" style="-fx-background-color: #a2bfee;" text="Alunos Por Frequencia" textFill="WHITE" />
+            <Button fx:id="alunosPorNotaBtn" layoutX="289.0" layoutY="317.0" mnemonicParsing="false" onAction="#getAlunosPorNota" style="-fx-background-color: #1459c7;" text="Alunos Por Nota" textFill="WHITE" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="157.0" layoutY="420.0" prefHeight="312.0" prefWidth="600.0" style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="420.0">
@@ -84,17 +86,26 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
+                  <Button fx:id="btnGerarRelatorio" layoutX="390.0" layoutY="17.0" mnemonicParsing="false" onAction="#gerarRelatorio" style="-fx-background-color: #a2bfee; -fx-background-radius: 20;" text="GerarRelatorio" textFill="WHITE">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Pictures/reg/agenda.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
             </HBox>
             <TextField fx:id="barraPesquisa" layoutX="10.0" layoutY="53.0" onKeyReleased="#pesquisar" promptText="Pesquise pelo nome..." style="-fx-background-radius: 10;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="53.0" />
             <TableView fx:id="table" layoutX="9.0" layoutY="95.0" prefHeight="239.0" prefWidth="582.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="9.0" AnchorPane.topAnchor="95.0">
                <columns>
-                  <TableColumn fx:id="col_id" prefWidth="75.0" style="-fx-background-color: #a2bfee;" text="ID" />
-                  <TableColumn fx:id="colNome" prefWidth="132.0" style="-fx-background-color: #a2bfee;" text="Nome" />
-                  <TableColumn fx:id="colEmail" prefWidth="114.0" style="-fx-background-color: #a2bfee;" text="Email" />
-                  <TableColumn fx:id="colTelefone" prefWidth="74.0" style="-fx-background-color: #a2bfee;" text="Telefone" />
+                  <TableColumn fx:id="col_id" prefWidth="61.0" style="-fx-background-color: #a2bfee;" text="ID" />
+                  <TableColumn fx:id="colNome" prefWidth="121.0" style="-fx-background-color: #a2bfee;" text="Nome" />
+                  <TableColumn fx:id="colEmail" prefWidth="102.0" style="-fx-background-color: #a2bfee;" text="Email" />
+                  <TableColumn fx:id="colDataMatricula" prefWidth="111.0" style="-fx-background-color: #a2bfee;" text="Data de Matricula" />
                   <TableColumn fx:id="colDataNascimento" prefWidth="122.0" style="-fx-background-color: #a2bfee;" text="Data de Nascimento" />
-                  <TableColumn fx:id="colMatricula" prefWidth="73.0" style="-fx-background-color: #a2bfee;" text="Matricula" />
+                  <TableColumn fx:id="colRegistro" prefWidth="73.0" style="-fx-background-color: #a2bfee;" text="Registro" />
                   <TableColumn fx:id="colAnoIngresso" prefWidth="64.0" style="-fx-background-color: #a2bfee;" text="Ingresso" />
                </columns></TableView>
          </children>

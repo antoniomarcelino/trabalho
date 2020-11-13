@@ -140,8 +140,8 @@ public class TurmaController implements Initializable {
     	String labelProfessor = lblValidaProfessor.getText();
     	
     	if( (labelCodigo.equals("") && labelDisciplina.equals("") && labelDisciplina.equals("") && labelProfessor.equals("")) 
-    			&& (!ValidarCampo.checarCampoVazio(txtCodigo) && !ValidarCampo.checarCampoVazio(txtDisciplina) 
-    					&& !ValidarCampo.checarCampoVazio(txtProfessor)) ) {
+    			&& (!ValidarCampo.checarCampoVazio(txtCodigo.getText()) && !ValidarCampo.checarCampoVazio(txtDisciplina.getText()) 
+    					&& !ValidarCampo.checarCampoVazio(txtProfessor.getText())) ) {
     	TurmaDAO dao = new TurmaDAO();
     	Turma t = new Turma();
     
@@ -205,11 +205,11 @@ public class TurmaController implements Initializable {
 			{
 				String information = "";
 				
-				if(ValidarCampo.checarCampoVazio(txtCodigo)) {
+				if(ValidarCampo.checarCampoVazio(txtCodigo.getText())) {
 					information += "Campo Código Obrigatório\n";
 		    	}
 		    	
-		    	if(!ValidarCampo.checarTamanho(txtCodigo, 20))
+		    	if(!ValidarCampo.checarTamanho(txtCodigo.getText(), 20))
 		    	{
 		    		information += "Campo Código Deve Conter no Máximo 20 Caracteres\n";
 
@@ -226,12 +226,12 @@ public class TurmaController implements Initializable {
 			{
 				String information = "";
 				
-				if(ValidarCampo.checarCampoVazio(txtDisciplina)) {
+				if(ValidarCampo.checarCampoVazio(txtDisciplina.getText())) {
 					information += "Campo Disciplina Obrigatório\n";
 		    	}
 		    	
 
-		    	if(!ValidarCampo.checarTamanho(txtDisciplina, 50))
+		    	if(!ValidarCampo.checarTamanho(txtDisciplina.getText(), 50))
 		    	{
 		    		information += "Campo Disciplina Deve Conter no Máximo 50 Caracteres\n";
 
@@ -248,12 +248,12 @@ public class TurmaController implements Initializable {
 			{
 				String information = "";
 				
-				if(ValidarCampo.checarCampoVazio(txtProfessor)) {
+				if(ValidarCampo.checarCampoVazio(txtProfessor.getText())) {
 					information += "Campo Nome do Professor Obrigatório\n";
 		    	}
 		    	
 		    	
-		    	if(!ValidarCampo.checarTamanho(txtProfessor, 80))
+		    	if(!ValidarCampo.checarTamanho(txtProfessor.getText(), 80))
 		    	{
 		    		information += "Campo Nome do Professor Deve Conter no Máximo 80 Caracteres\n";
 		    	}
