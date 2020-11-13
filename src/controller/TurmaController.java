@@ -22,6 +22,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import model.AlunoDAO;
 import model.Turma;
 import model.TurmaDAO;
 import util.ValidarCampo;
@@ -78,9 +79,27 @@ public class TurmaController implements Initializable {
 
     @FXML
     private TableColumn<Turma, String> colProfessor;
+    
+    @FXML
+    private Button professoresBtn;
   
     private ObservableList<Turma> obsList = FXCollections.observableArrayList();
     private List<Turma> turmas;
+    
+    @FXML
+    void getProfessores(ActionEvent event) {
+    	TurmaDAO dao = new TurmaDAO();
+    	List<String> professores = dao.getProfessores();
+    	String lista = "Professores e Materias: \n";
+    	for(int x = 0; x <professores.size(); x+=2) {
+    		lista+= "\t" + professores.get(x) + "\n" + "\t" + professores.get(x+1) + "\n";
+    	}
+    	Alert alert;
+    	alert = new Alert(AlertType.INFORMATION, lista, ButtonType.OK);
+		alert.setTitle("Lista de Professores");
+		alert.setHeaderText("A lista mostra professores e materia");
+    	alert.show();
+    }
     
     @FXML
     void atualizar(ActionEvent event) throws SQLException {
@@ -140,8 +159,8 @@ public class TurmaController implements Initializable {
     	String labelProfessor = lblValidaProfessor.getText();
     	
     	if( (labelCodigo.equals("") && labelDisciplina.equals("") && labelDisciplina.equals("") && labelProfessor.equals("")) 
-    			&& (!ValidarCampo.checarCampoVazio(txtCodigo) && !ValidarCampo.checarCampoVazio(txtDisciplina) 
-    					&& !ValidarCampo.checarCampoVazio(txtProfessor)) ) {
+    			&& (!ValidarCampo.checarCampoVazio(txtCodigo.getText()) && !ValidarCampo.checarCampoVazio(txtDisciplina.getText()) 
+    					&& !ValidarCampo.checarCampoVazio(txtProfessor.getText())) ) {
     	TurmaDAO dao = new TurmaDAO();
     	Turma t = new Turma();
     
@@ -205,11 +224,11 @@ public class TurmaController implements Initializable {
 			{
 				String information = "";
 				
-				if(ValidarCampo.checarCampoVazio(txtCodigo)) {
+				if(ValidarCampo.checarCampoVazio(txtCodigo.getText())) {
 					information += "Campo Código Obrigatório\n";
 		    	}
 		    	
-		    	if(!ValidarCampo.checarTamanho(txtCodigo, 20))
+		    	if(!ValidarCampo.checarTamanho(txtCodigo.getText(), 20))
 		    	{
 		    		information += "Campo Código Deve Conter no Máximo 20 Caracteres\n";
 
@@ -226,12 +245,12 @@ public class TurmaController implements Initializable {
 			{
 				String information = "";
 				
-				if(ValidarCampo.checarCampoVazio(txtDisciplina)) {
+				if(ValidarCampo.checarCampoVazio(txtDisciplina.getText())) {
 					information += "Campo Disciplina Obrigatório\n";
 		    	}
 		    	
 
-		    	if(!ValidarCampo.checarTamanho(txtDisciplina, 50))
+		    	if(!ValidarCampo.checarTamanho(txtDisciplina.getText(), 50))
 		    	{
 		    		information += "Campo Disciplina Deve Conter no Máximo 50 Caracteres\n";
 
@@ -248,12 +267,12 @@ public class TurmaController implements Initializable {
 			{
 				String information = "";
 				
-				if(ValidarCampo.checarCampoVazio(txtProfessor)) {
+				if(ValidarCampo.checarCampoVazio(txtProfessor.getText())) {
 					information += "Campo Nome do Professor Obrigatório\n";
 		    	}
 		    	
 		    	
-		    	if(!ValidarCampo.checarTamanho(txtProfessor, 80))
+		    	if(!ValidarCampo.checarTamanho(txtProfessor.getText(), 80))
 		    	{
 		    		information += "Campo Nome do Professor Deve Conter no Máximo 80 Caracteres\n";
 		    	}

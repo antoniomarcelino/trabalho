@@ -33,6 +33,7 @@
             <Label fx:id="lblValidaCodigo" layoutX="33.0" layoutY="104.0" prefHeight="17.0" prefWidth="543.0" textFill="#f24f4f" />
             <Label fx:id="lblValidaDisciplina" layoutX="33.0" layoutY="171.0" prefHeight="17.0" prefWidth="543.0" textFill="#f24f4f" />
             <Label fx:id="lblValidaProfessor" layoutX="33.0" layoutY="246.0" prefHeight="17.0" prefWidth="543.0" textFill="#f24f4f" />
+            <Button fx:id="professoresBtn" layoutX="33.0" layoutY="251.0" mnemonicParsing="false" onAction="#getProfessores" text="Listar Professores" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="200.0" layoutY="348.0" prefHeight="336.0" prefWidth="600.0" style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="348.0">

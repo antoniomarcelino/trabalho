@@ -60,6 +60,41 @@ public boolean deletar(Turma t) throws SQLException {
 		}
 		return false;	
 	}
+
+public List<String> getProfessores(){
+	ArrayList<String> professores = new ArrayList<>();
+	PreparedStatement stmt;
+	String str_nome = "";
+	String str_materia = "";
+	String sql = "SELECT funcionario.nome, materia.nome\r\n" + 
+			"FROM funcionario, materia, turma\r\n" + 
+			"WHERE funcionario.id = professor AND materia.id = materia AND funcionario.cargo = \"professor\"";
+	try {
+		stmt = conexao.prepareStatement(sql);
+	    ResultSet rs = stmt.executeQuery();
+	    
+	    while(rs.next()) {
+	    	
+	    	str_nome = rs.getString("funcionario.nome");
+	    	str_materia = rs.getString("materia.nome");
+	    	
+	    	if(str_nome != null) 
+	    		professores.add(str_nome);
+	    	
+	    	if(str_materia != null) 
+	    		professores.add(str_materia);
+	    		  		
+	    }
+	    rs.close();
+	    stmt.close();
+	} catch (SQLException e) {
+		e.printStackTrace();
+		return professores;
+	}
+	return professores;
+	
+}
+
 	
 	public List<Turma> consultar(String pesquisa) {
 		ArrayList<Turma> turmas = new ArrayList<>();

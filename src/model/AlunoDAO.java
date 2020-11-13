@@ -31,10 +31,118 @@ public class AlunoDAO {
 		return true;
 	}
 	
+	public List<String> getAlunosPorFrequencia(){
+		ArrayList<String> alunos = new ArrayList<>();
+		PreparedStatement stmt;
+		String str_nome = "";
+		String str_faltas = "";
+		String sql = "SELECT nome, faltas FROM aluno, matricula WHERE aluno.id = aluno";
+		try {
+			stmt = conexao.prepareStatement(sql);
+		    ResultSet rs = stmt.executeQuery();
+		    
+		    while(rs.next()) {
+		    	
+		    	str_nome = rs.getString("nome");
+		    	str_faltas = rs.getString("faltas");
+		    	
+		    	if(str_nome != null) 
+		    		alunos.add(str_nome);
+		    	
+		    	if(str_faltas != null) {
+		    		int freq = (100 * Integer.parseInt(str_faltas))/60;
+		    		alunos.add(Integer.toString(freq));
+		    		}
+		    		
+			  		
+		    }
+		    rs.close();
+		    stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return alunos;
+		}
+		return alunos;
+		
+	}
+	
+	public List<String> getAlunosPorNota(){
+		ArrayList<String> alunos = new ArrayList<>();
+		PreparedStatement stmt;
+		String str_nome = "";
+		String str_notas = "";
+		String sql = "SELECT nome, notas FROM aluno, matricula WHERE aluno.id = aluno";
+		try {
+			stmt = conexao.prepareStatement(sql);
+		    ResultSet rs = stmt.executeQuery();
+		    
+		    while(rs.next()) {
+		    	
+		    	str_nome = rs.getString("nome");
+		    	str_notas = rs.getString("notas");
+		    	
+		    	if(str_nome != null) 
+		    		alunos.add(str_nome);
+		    	
+		    	if(str_notas != null) 
+		    		alunos.add(str_notas);
+		    		  		
+		    }
+		    rs.close();
+		    stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return alunos;
+		}
+		return alunos;
+		
+	}
+	
+	public List<Aluno> gerarRelatorio(String str) {
+		ArrayList<Aluno> alunos = new ArrayList<>();
+		PreparedStatement stmt;
+		Aluno a = null;
+		String sql = "SELECT nome, registro_aluno, email FROM aluno, matricula WHERE aluno.id = aluno AND faltas > 45;";
+		
+		String nome;
+	    String email;
+	    int registroAluno;
+		
+		try {
+			stmt = conexao.prepareStatement(sql);
+		    ResultSet rs = stmt.executeQuery();
+		    
+		    while(rs.next()) {
+		    	
+		    	nome = rs.getString("nome");
+		    	email = rs.getString("email");
+		    	
+		    	registroAluno = rs.getInt("registro_aluno");
+		    	System.out.println(nome);
+		    	System.out.println(email);
+		    	
+		    	if(nome != null) {
+		    		a = new Aluno();
+			    	a.setNome(nome);
+			    	a.setEmail(email);
+			    	a.setRegistroAluno(registroAluno);
+			    
+		    	}
+		    	alunos.add(a);		
+		    }
+		    rs.close();
+		    stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return alunos;
+		}
+		return alunos;
+	}
+	
 	public boolean existe(String str) {
 		PreparedStatement stmt = null;
         ResultSet result = null;
-        String sql = "select * from aluno where registro_de_aluno = ?";
+        String sql = "select * from aluno where registro_aluno = ?";
         try {
         	stmt = conexao.prepareStatement(sql);
         	stmt.setString(1, str);
@@ -49,16 +157,15 @@ public class AlunoDAO {
 	
 	public boolean inserir(Aluno a) throws SQLException {
 		PreparedStatement stmt = null;
-		String sql_insert = "INSERT INTO aluno (`nome`, `email`, `telefone`, `matricula`, `data_nascimento`, `ano_ingresso`)" + 
-				"VALUES (?, ?, ?, ?, ?, ?)";
+		String sql_insert = "INSERT INTO aluno (`nome`, `email`, `data_matricula`, `registro_aluno`, `data_nascimento`)" + 
+				"VALUES (?, ?, ?, ?, ?)";
 		try {
 		    		stmt = conexao.prepareStatement(sql_insert);
 		    		stmt.setString(1, a.getNome());
 				    stmt.setString(2, a.getEmail());
-				    stmt.setString(3, a.getTelefone());
-				    stmt.setString(4, a.getMatricula());
+				    stmt.setString(3, a.getDataMatricula());
+				    stmt.setInt(4, a.getRegistroAluno());
 				    stmt.setDate(5, java.sql.Date.valueOf(a.getDataNascimento()));
-				    stmt.setInt(6, a.getAnoIngresso());
 				    stmt.execute();
 				    stmt.close();
 
@@ -73,15 +180,16 @@ public class AlunoDAO {
 	public boolean atualizar(Aluno a) throws SQLException {
 		PreparedStatement stmt = null;
 		boolean resultado = true;
-		String sql_update = "UPDATE aluno SET nome = ?, email = ?, telefone =?, data_nascimento =? WHERE id = ?";
+		String sql_update = "UPDATE aluno SET nome = ?, email = ?, data_matricula= ?, data_nascimento =?, registro_aluno =  ? WHERE id = ?";
 	        try {
 	 
 	        	stmt = conexao.prepareStatement(sql_update);
 		           stmt.setString(1, a.getNome());
 		           stmt.setString(2, a.getEmail());
-		           stmt.setString(3, a.getTelefone());
+		           stmt.setString(3, a.getDataMatricula());
 		           stmt.setDate(4, java.sql.Date.valueOf( a.getDataNascimento() ));
-		           stmt.setInt(5, a.getId());
+		           stmt.setInt(5,  a.getRegistroAluno());
+		           stmt.setInt(6, a.getId());
 	           
 	            int linhasAfetadas = stmt.executeUpdate();
 	            resultado = linhasAfetadas > 0;
@@ -113,13 +221,14 @@ public class AlunoDAO {
 			sql = "select * from aluno where nome like '" + pesquisa + "%'";
 		}
 		
+		
+		
 		int id;
 		String nome;
 	    String email;
-	    String telefone;
 	    Date dataNascimento;
-	    String matricula;
-	    int anoIngresso;
+	    String dataMatricula;
+	    int registroAluno;
 		
 		try {
 			stmt = conexao.prepareStatement(sql);
@@ -129,22 +238,20 @@ public class AlunoDAO {
 		    	id = rs.getInt("id");
 		    	nome = rs.getString("nome");
 		    	email = rs.getString("email");
-		    	telefone = rs.getString("telefone");
 		    	dataNascimento = rs.getDate("data_nascimento");
-		    	matricula = rs.getString("matricula");
-		    	anoIngresso = rs.getInt("ano_ingresso");
+		    	dataMatricula = rs.getString("data_matricula");
+		    	registroAluno = rs.getInt("registro_aluno");
 		    	
 		    	if(nome != null) {
 		    		a = new Aluno();
 			    	a.setId(id);
 			    	a.setNome(nome);
 			    	a.setEmail(email);
-			    	a.setTelefone(telefone);
 			    	a.setDataNascimento(dataNascimento.toLocalDate());
-			    	a.setMatricula(matricula);
-			    	a.setAnoIngresso(anoIngresso);
+			    	a.setDataMatricula(dataMatricula);
+			    	a.setRegistroAluno(registroAluno);
 			    	
-			    	ArrayList<Turma> turmas = new ArrayList<Turma>();
+			    	/*ArrayList<Turma> turmas = new ArrayList<Turma>();
 					Turma turma = null;
 						String professor, codigo, disciplina;
 						int idTurma;
@@ -167,7 +274,7 @@ public class AlunoDAO {
 						    rs2.close();
 			    	if(!turmas.isEmpty()) {
 			    		a.setTurmas(turmas);
-			    	}
+			    	}*/
 		    	}
 		    	alunos.add(a);		
 		    }
